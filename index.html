@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Portfolio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&amp;family=Jost:wght@300;400;500&amp;display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+    
+    .app-wrapper {
+      min-height: 100%;
+      width: 100%;
+    }
+    
+    .font-serif-elegant {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+    
+    .font-sans-modern {
+      font-family: 'Jost', 'Helvetica Neue', sans-serif;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes softPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+    
+    .animate-fade-in-up {
+      animation: fadeInUp 1.2s ease-out forwards;
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 1.5s ease-out forwards;
+    }
+    
+    .animate-fade-in-delayed {
+      animation: fadeIn 1.5s ease-out 0.5s forwards;
+      opacity: 0;
+    }
+    
+    .animate-fade-in-delayed-more {
+      animation: fadeIn 1.5s ease-out 1s forwards;
+      opacity: 0;
+    }
+    
+    .soft-glow {
+      animation: softPulse 4s ease-in-out infinite;
+    }
+    
+    .portrait-frame {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .portrait-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(212, 175, 135, 0.3);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+    
+    .decorative-line {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, currentColor, transparent);
+    }
+    
+    .text-balance {
+      text-wrap: balance;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    ::selection {
+      background-color: rgba(212, 175, 135, 0.3);
+      color: inherit;
+    }
+    
+    /* Realistic vintage paper texture background */
+    .vintage-paper-texture {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #e8dcc8;
+      background-image: 
+        /* Perlin-like noise for organic texture */
+        url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cfilter id='turbulence'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='6' result='noise' seed='5'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='noise' scale='40' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='200' height='200' fill='%23e8dcc8' filter='url(%23turbulence)' opacity='1'/%3E%3C/svg%3E"),
+        /* Aged stains and watermarks */
+        radial-gradient(circle at 10% 15%, rgba(160, 120, 80, 0.2) 0%, transparent 12%),
+        radial-gradient(circle at 85% 70%, rgba(150, 110, 70, 0.15) 0%, transparent 15%),
+        radial-gradient(circle at 92% 12%, rgba(170, 130, 90, 0.1) 0%, transparent 10%),
+        radial-gradient(circle at 20% 88%, rgba(145, 105, 65, 0.12) 0%, transparent 11%),
+        radial-gradient(circle at 65% 35%, rgba(155, 115, 75, 0.08) 0%, transparent 13%),
+        radial-gradient(circle at 40% 60%, rgba(130, 90, 50, 0.06) 0%, transparent 12%),
+        /* Fine paper fiber texture */
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.02) 1px, transparent 2px, transparent 3px, rgba(0, 0, 0, 0.015) 4px),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 3px),
+        /* Vignette for aged look */
+        radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.04) 100%),
+        /* Subtle directional variation */
+        linear-gradient(135deg, rgba(200, 170, 140, 0.06) 0%, transparent 40%, rgba(180, 150, 120, 0.04) 100%);
+      background-size: 
+        500px 500px,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        3px 3px,
+        4px 4px,
+        100% 100%;
+      background-attachment: fixed;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    /* Book-style content frame */
+    .book-spine {
+      position: relative;
+      box-shadow: 
+        inset 0 0 20px rgba(0, 0, 0, 0.05),
+        0 15px 35px rgba(0, 0, 0, 0.08);
+    }
+    
+    .book-spine::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 135, 0.3), transparent);
+    }
+    
+    .book-spine::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 135, 0.3), transparent);
+    }
+    
+    /* Page styling */
+    .page-content {
+      position: relative;
+      padding: 60px 80px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    @media (max-width: 768px) {
+      .page-content {
+        padding: 40px 30px;
+      }
+    }
+    
+    /* Aged paper effect */
+    .aged-paper {
+      background: 
+        linear-gradient(135deg, rgba(212, 175, 135, 0.02) 0%, transparent 50%),
+        linear-gradient(-135deg, rgba(212, 175, 135, 0.015) 0%, transparent 50%);
+    }
+    
+    /* Decorative ornaments */
+    .ornament {
+      opacity: 0.3;
+    }
+    
+    /* Line spacing for book feel */
+    .book-paragraph {
+      position: relative;
+      text-align: justify;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full"><!-- Vintage paper texture background -->
+  <div class="vintage-paper-texture"></div>
+  <div class="app-wrapper overflow-auto relative z-0" id="app-wrapper"><!-- Header Section with Portrait -->
+   <header class="relative min-h-[85%] flex items-center justify-center px-6 py-16 md:py-24" id="header-section"><!-- Subtle decorative elements -->
+    <div class="absolute top-8 left-8 w-24 h-24 border border-current opacity-10 rounded-full soft-glow" id="decor-circle-1"></div>
+    <div class="absolute bottom-12 right-12 w-16 h-16 border border-current opacity-10 rounded-full soft-glow" style="animation-delay: 2s;" id="decor-circle-2"></div>
+    <div class="max-w-4xl mx-auto text-center"><!-- Portrait Image -->
+     <div class="animate-fade-in mb-10 md:mb-14">
+  <div class="portrait-frame w-48 h-48 md:w-64 md:h-64 mx-auto rounded-full overflow-hidden shadow-lg relative" id="portrait-container">
+
+    <!-- Image (will show if available) -->
+    <img 
+      src="personal.PNG" 
+      alt="Portrait" 
+      class="w-full h-full object-cover absolute inset-0 z-10"
+      onerror="this.style.display='none'; document.getElementById('portrait-svg').style.display='block';"
+    />
+    <!-- Elegant placeholder portrait using SVG (fallback) -->
+    <svg viewBox="0 0 200 200" class="w-full h-full hidden" id="portrait-svg">
+      <defs>
+        <linearGradient id="portraitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#f5f0e8" />
+          <stop offset="50%" style="stop-color:#e8dfd4" />
+          <stop offset="100%" style="stop-color:#d4c4b0" />
+        </linearGradient>
+        <linearGradient id="skinGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#f0d9c4" />
+          <stop offset="100%" style="stop-color:#e8c9af" />
+        </linearGradient>
+      </defs>
+
+      <circle cx="100" cy="100" r="100" fill="url(#portraitGradient)" />
+      <ellipse cx="100" cy="85" rx="35" ry="42" fill="url(#skinGradient)" />
+      <ellipse cx="100" cy="150" rx="50" ry="45" fill="#d4af87" opacity="0.6" />
+      <path d="M60 70 Q65 40 100 35 Q135 40 140 70 Q145 90 140 100 Q135 85 100 80 Q65 85 60 100 Q55 90 60 70" fill="#4a3728" opacity="0.7" />
+      <ellipse cx="85" cy="80" rx="4" ry="2.5" fill="#6b5344" opacity="0.6" />
+      <ellipse cx="115" cy="80" rx="4" ry="2.5" fill="#6b5344" opacity="0.6" />
+      <path d="M95 95 Q100 98 105 95" stroke="#8b7355" stroke-width="1.5" fill="none" stroke-linecap="round" />
+      <path d="M90 105 Q100 112 110 105" stroke="#c9a089" stroke-width="2" fill="none" stroke-linecap="round" />
+      <circle cx="62" cy="90" r="3" fill="#d4af87" opacity="0.5" />
+      <circle cx="138" cy="90" r="3" fill="#d4af87" opacity="0.5" />
+    </svg>
+
+  </div>
+</div><!-- Name -->
+     <h1 class="font-serif-elegant text-5xl md:text-7xl lg:text-8xl font-light tracking-wide animate-fade-in-delayed mb-4" id="name-heading">Pooja Singh</h1><!-- Decorative line -->
+     <div class="flex justify-center mb-6 animate-fade-in-delayed" id="decorative-line-container">
+      <div class="decorative-line" id="decorative-line"></div>
+     </div><!-- Tagline -->
+     <p class="font-sans-modern text-sm md:text-base tracking-[0.3em] uppercase animate-fade-in-delayed-more" id="tagline">Grace · Simplicity · Purpose</p>
+    </div>
+   </header><!-- Content Section - Book Style -->
+   <section class="aged-paper py-2 md:py-2" id="content-section">
+    <div class="book-spine" id="book-spine">
+     <div class="page-content" id="page-content"><!-- Page number ornament top -->
+      <div class="text-center mb-16 ornament" id="ornament-top">
+       <svg class="w-8 h-8 mx-auto" viewbox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="0.5" opacity="0.4" /> <path d="M24 12v24M12 24h24" stroke="currentColor" stroke-width="0.5" opacity="0.3" /> <circle cx="24" cy="24" r="2" fill="currentColor" opacity="0.4" />
+       </svg>
+      </div><!-- Bio content -->
+      <article class="font-serif-elegant leading-relaxed md:leading-loose space-y-8" id="bio-article">
+       <p class="text-balance book-paragraph" id="bio-para-1">She is a person of quiet strength, grace, and deep-rooted values. Growing up with a strong cultural and moral foundation, she has always chosen humility and simplicity as guiding principles, regardless of the opportunities and comforts available to her.</p>
+
+<p class="text-balance book-paragraph" id="bio-para-2">She believes in creating a positive impact in society through kindness, empathy, and meaningful actions. For her, true success lies not in recognition or display, but in the ability to support, uplift, and inspire others in everyday life.</p>
+
+<p class="text-balance book-paragraph" id="bio-para-3">Spiritually grounded and emotionally balanced, she approaches life with calmness, clarity, and thoughtful reflection. Her faith and inner discipline help her remain composed, focused, and purposeful even in challenging situations.</p>
+
+<p class="text-balance book-paragraph" id="bio-para-4">She values peace, mutual respect, and open communication. She believes that understanding and dialogue build stronger relationships and that respect is something to be practiced consistently in both words and actions.</p>
+
+<p class="text-balance book-paragraph" id="bio-para-5">With a deep love for learning, reading, and philosophy, she strives to live a life of awareness and balance. Her thoughts are expressed with clarity and empathy, reflecting both rationality and compassion.</p>
+
+<p class="text-balance book-paragraph" id="bio-para-6">She embraces progress while staying connected to her cultural roots. She believes that growth and tradition can coexist harmoniously, and she carries her identity with confidence and dignity.</p>
+
+<p class="text-balance book-paragraph" id="bio-para-7">Creativity and mindfulness are an essential part of her life. Whether through art, reflection, or nurturing nature, she finds joy in creating calm, beauty, and harmony in her surroundings.</p>
+
+<p class="text-balance book-paragraph" id="bio-para-8">She values emotional well-being, authenticity, and simplicity over material display. For her, a meaningful life is one that is guided by ethics, kindness, and inner peace.</p>
+
+<p class="text-balance book-paragraph" id="bio-para-9">Resilient and self-aware, she continues her journey with sincerity, purpose, and quiet confidence—believing that real strength lies in integrity, compassion, and the positive impact one leaves behind.</p>
+       <!-- Closing quote -->
+       <blockquote class="text-center pt-12 mt-12" id="closing-quote-container">
+        <div class="decorative-line mx-auto mb-8" id="quote-line"></div>
+        <p class="font-serif-elegant italic font-light opacity-70" id="closing-quote">"In the depth of her silence, she carries an ocean of peace."</p>
+        <div class="decorative-line mx-auto mt-8" id="quote-line-bottom"></div>
+       </blockquote>
+      </article><!-- Page number ornament bottom -->
+      <div class="text-center mt-16 ornament" id="ornament-bottom">
+       <svg class="w-8 h-8 mx-auto" viewbox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="0.5" opacity="0.4" /> <path d="M24 12v24M12 24h24" stroke="currentColor" stroke-width="0.5" opacity="0.3" /> <circle cx="24" cy="24" r="2" fill="currentColor" opacity="0.4" />
+       </svg>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-12 text-center" id="footer-section">
+    <div class="font-sans-modern text-xs tracking-widest uppercase opacity-40" id="footer-text">
+     ~ With grace ~
+    </div>
+   </footer>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      // Colors (ordered by visual prominence)
+      background_color: '#e8dcc8',      // Vintage cream - primary background
+      surface_color: '#ede8df',         // Soft vintage cream - content surface
+      text_color: '#5c5347',            // Warm brown - main text
+      primary_action_color: '#d4af87',  // Soft gold - accents & decorative
+      secondary_action_color: '#8b7355', // Muted brown - secondary elements
+      
+      // Font
+      font_family: 'Cormorant Garamond',
+      font_size: 18,
+      
+      // Content
+      name: 'Ananya',
+      tagline: 'Grace · Simplicity · Purpose',
+      bio_paragraph_one: 'She walks through life with quiet dignity, her presence a gentle reminder that true strength lies not in words spoken loudly, but in actions taken with intention. Humble and grounded, she finds beauty in simplicity and meaning in stillness.',
+      bio_paragraph_two: 'Her spirit is balanced—rooted in timeless wisdom yet open to the winds of change. She honors both the ancient and the modern, weaving cultural heritage with contemporary thought. In her world, respect is not demanded but naturally given, kindness flows freely, and every soul she encounters is met with genuine warmth.',
+      bio_paragraph_three: 'She finds solace in the pages of books, in the quiet contemplation of philosophy, in the whisper of leaves and the rhythm of nature. Creativity is her companion, expressed not for applause but for the pure joy of creation. She believes in relationships built on mutual respect, in connections that nurture rather than diminish, in love that grows stronger through understanding.',
+      closing_quote: '"In the depth of her silence, she carries an ocean of peace."'
+    };
+    
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        
+        onConfigChange: async (config) => {
+          const c = { ...defaultConfig, ...config };
+          
+          // Apply background color - update the texture background
+          const textureDiv = document.querySelector('.vintage-paper-texture');
+          if (textureDiv) {
+            textureDiv.style.backgroundColor = c.background_color;
+          }
+          
+          // Apply text color to body and main elements
+          const wrapper = document.getElementById('app-wrapper');
+          wrapper.style.color = c.text_color;
+          
+          // Header section
+          const headerSection = document.getElementById('header-section');
+          headerSection.style.color = c.text_color;
+          
+          // Decorative circles - use primary action color
+          document.getElementById('decor-circle-1').style.borderColor = c.primary_action_color;
+          document.getElementById('decor-circle-2').style.borderColor = c.primary_action_color;
+          
+          // Portrait container shadow
+          const portraitContainer = document.getElementById('portrait-container');
+          portraitContainer.style.boxShadow = `0 20px 40px ${c.primary_action_color}33`;
+          
+          // Decorative line
+          document.getElementById('decorative-line').style.background = `linear-gradient(90deg, transparent, ${c.primary_action_color}, transparent)`;
+          document.getElementById('quote-line').style.background = `linear-gradient(90deg, transparent, ${c.primary_action_color}, transparent)`;
+          document.getElementById('quote-line-bottom').style.background = `linear-gradient(90deg, transparent, ${c.primary_action_color}, transparent)`;
+          
+          // Content section - use surface color
+          const contentSection = document.getElementById('content-section');
+          contentSection.style.backgroundColor = c.surface_color;
+          
+          // Book spine
+          const bookSpine = document.getElementById('book-spine');
+          bookSpine.style.backgroundColor = c.surface_color;
+          bookSpine.style.color = c.text_color;
+          
+          // Page content
+          const pageContent = document.getElementById('page-content');
+          pageContent.style.color = c.text_color;
+          
+          // Ornaments
+          document.getElementById('ornament-top').style.color = c.primary_action_color;
+          document.getElementById('ornament-bottom').style.color = c.primary_action_color;
+          
+          // Footer
+          const footerSection = document.getElementById('footer-section');
+          footerSection.style.backgroundColor = c.background_color;
+          footerSection.style.color = c.secondary_action_color;
+          
+          // Apply fonts
+          const fontStack = `'${c.font_family}', Georgia, serif`;
+          const baseSize = c.font_size;
+          
+          // Name heading
+          const nameHeading = document.getElementById('name-heading');
+          nameHeading.style.fontFamily = fontStack;
+          nameHeading.textContent = c.name;
+          
+          // Tagline
+          const tagline = document.getElementById('tagline');
+          tagline.textContent = c.tagline;
+          
+          // Bio paragraphs
+          const bioPara1 = document.getElementById('bio-para-1');
+          const bioPara2 = document.getElementById('bio-para-2');
+          const bioPara3 = document.getElementById('bio-para-3');
+          
+          bioPara1.style.fontFamily = fontStack;
+          bioPara1.style.fontSize = `${baseSize}px`;
+          bioPara1.textContent = c.bio_paragraph_one;
+          
+          bioPara2.style.fontFamily = fontStack;
+          bioPara2.style.fontSize = `${baseSize}px`;
+          bioPara2.textContent = c.bio_paragraph_two;
+          
+          bioPara3.style.fontFamily = fontStack;
+          bioPara3.style.fontSize = `${baseSize}px`;
+          bioPara3.textContent = c.bio_paragraph_three;
+          
+          // Closing quote
+          const closingQuote = document.getElementById('closing-quote');
+          closingQuote.style.fontFamily = fontStack;
+          closingQuote.style.fontSize = `${baseSize * 0.95}px`;
+          closingQuote.textContent = c.closing_quote;
+        },
+        
+        mapToCapabilities: (config) => {
+          const c = { ...defaultConfig, ...config };
+          
+          return {
+            recolorables: [
+              {
+                get: () => c.background_color,
+                set: (value) => { c.background_color = value; window.elementSdk.setConfig({ background_color: value }); }
+              },
+              {
+                get: () => c.surface_color,
+                set: (value) => { c.surface_color = value; window.elementSdk.setConfig({ surface_color: value }); }
+              },
+              {
+                get: () => c.text_color,
+                set: (value) => { c.text_color = value; window.elementSdk.setConfig({ text_color: value }); }
+              },
+              {
+                get: () => c.primary_action_color,
+                set: (value) => { c.primary_action_color = value; window.elementSdk.setConfig({ primary_action_color: value }); }
+              },
+              {
+                get: () => c.secondary_action_color,
+                set: (value) => { c.secondary_action_color = value; window.elementSdk.setConfig({ secondary_action_color: value }); }
+              }
+            ],
+            borderables: [],
+            fontEditable: {
+              get: () => c.font_family,
+              set: (value) => { c.font_family = value; window.elementSdk.setConfig({ font_family: value }); }
+            },
+            fontSizeable: {
+              get: () => c.font_size,
+              set: (value) => { c.font_size = value; window.elementSdk.setConfig({ font_size: value }); }
+            }
+          };
+        },
+        
+        mapToEditPanelValues: (config) => {
+          const c = { ...defaultConfig, ...config };
+          return new Map([
+            ['name', c.name],
+            ['tagline', c.tagline],
+            ['bio_paragraph_one', c.bio_paragraph_one],
+            ['bio_paragraph_two', c.bio_paragraph_two],
+            ['bio_paragraph_three', c.bio_paragraph_three],
+            ['closing_quote', c.closing_quote]
+          ]);
+        }
+      });
+    }
+    
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+    
+    // Observe bio paragraphs for scroll animation
+    document.querySelectorAll('#bio-article > p, #bio-article > blockquote').forEach((el, index) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = `opacity 0.8s ease ${index * 0.15}s, transform 0.8s ease ${index * 0.15}s`;
+      observer.observe(el);
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cde60b9915a2e8a',t:'MTc3MTA5MTExMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
